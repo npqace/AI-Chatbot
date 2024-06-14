@@ -38,34 +38,33 @@ class Chatbox {
 
     onSendButton(chatbox) {
         var textField = chatbox.querySelector('input');
-        let text1 = textField.value
+        let text1 = textField.value;
         if (text1 === "") {
             return;
         }
-
-        let msg1 = { name: "User", message: text1 }
+    
+        let msg1 = { name: "User", message: text1 };
         this.messages.push(msg1);
-
-        fetch('http://127.0.0.1:5000/api/predict', {
+    
+        fetch('http://127.0.0.1:8000/query/', { // Change the URL to match your FastAPI endpoint
             method: 'POST',
-            body: JSON.stringify({ message: text1 }),
+            body: JSON.stringify({ query: text1 }), // Adjust the body to match the backend's expected format
             mode: 'cors',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
-          })
-          .then(r => r.json())
-          .then(r => {
-            let msg2 = { name: "Sam", message: r.answer };
+        })
+        .then(r => r.json())
+        .then(r => {
+            let msg2 = { name: "Sam", message: r.response }; // Use the correct property from the response
             this.messages.push(msg2);
-            this.updateChatText(chatbox)
-            textField.value = ''
-
+            this.updateChatText(chatbox);
+            textField.value = '';
         }).catch((error) => {
             console.error('Error:', error);
-            this.updateChatText(chatbox)
-            textField.value = ''
-          });
+            this.updateChatText(chatbox);
+            textField.value = '';
+        });
     }
 
     updateChatText(chatbox) {

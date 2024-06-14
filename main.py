@@ -46,7 +46,7 @@ class QueryRequest(BaseModel):
     query: str
 
 # Initialize the OpenAI API client
-api_key = 'sk-proj-cXnfyQ0GaBg67v7prGhPT3BlbkFJwu2Zzx65cMMPiDjZ0WJf'
+api_key = 'your-api-key-here'
 client = OpenAI(api_key=api_key)
 
 # Initialize the Qdrant client
