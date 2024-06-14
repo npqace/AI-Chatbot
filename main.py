@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-from langchain.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from openai import OpenAI
 from qdrant_client import QdrantClient
@@ -46,9 +46,8 @@ class QueryRequest(BaseModel):
     query: str
 
 # Initialize the OpenAI API client
-api_key = 'your-api-key-here'
+api_key = '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'
 client = OpenAI(api_key=api_key)
-
 
 # Initialize the Qdrant client
 vector_db = QdrantClient(":memory:") # In-memory instance for testing
