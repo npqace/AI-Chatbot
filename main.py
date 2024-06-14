@@ -1,4 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from langchain.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -13,6 +15,12 @@ import tiktoken
 # Initialize the FastAPI app
 app = FastAPI()
 
+# Serve static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Setup Jinja2 for templates
+templates = Jinja2Templates(directory="templates")
+
 # Define a function to return a description of the app
 def get_app_description():
     return (
@@ -22,10 +30,12 @@ def get_app_description():
         "Use the '/query/' endpoint with a POST request to ask questions."
     )
 
-# Define the root endpoint to return the app description
+# Modify the root endpoint to serve a template
 @app.get("/")
-async def root():
-    return {"message": get_app_description()}
+async def root(request: Request):
+    # Example of passing dynamic content to your template
+    return templates.TemplateResponse("index.html", {"request": request, "app_description": get_app_description()})
+
 
 # Pydantic model for document processing
 class DocumentProcessingRequest(BaseModel):
