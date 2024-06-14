@@ -45,7 +45,7 @@ class DocumentProcessingRequest(BaseModel):
 class QueryRequest(BaseModel):
     query: str
 
-# Initialize the OpenAI API client
+# 
 
 
 # Initialize the Qdrant client
