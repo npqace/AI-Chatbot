@@ -45,10 +45,8 @@ class DocumentProcessingRequest(BaseModel):
 class QueryRequest(BaseModel):
     query: str
 
-from decouple import config
-# initialize openai API key
-OPENAI_API_KEY = config("OPENAI_API_KEY")
-client = OpenAI(api_key=OPENAI_API_KEY)
+# Initialize the OpenAI API client
+
 
 # Initialize the Qdrant client
 vector_db = QdrantClient(":memory:") # In-memory instance for testing
