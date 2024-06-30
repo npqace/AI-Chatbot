@@ -5,10 +5,8 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-# After initializing your Flask app
 CORS(app)
 
-# Initialize chatbot instances for English and Vietnamese
 excel_path = "Chatbot-VSTEP.xlsx" 
 chatbot_en = ChatbotAI(excel_path, language='English')
 chatbot_vn = ChatbotAI(excel_path, language='Vietnamese')
@@ -17,13 +15,41 @@ chatbot_vn = ChatbotAI(excel_path, language='Vietnamese')
 def home():
     return app.send_static_file('index.html')
 
+# @app.route('/query/', methods=['POST'])
+# def query():
+#     data = request.json
+#     question = data.get('query', '')
+
+#     # Fixed the language detection logic
+#     if any(char in "ủũụọõỏẹẻẽịĩỉìạãảàăâđêôơư" for char in question.lower()):
+#         answer = chatbot_vn.get_answer(question) 
+#     else:
+#         answer = chatbot_en.get_answer(question)
+
+#     return jsonify({'response': answer})
+
 @app.route('/query/', methods=['POST'])
 def query():
     data = request.json
     question = data.get('query', '')
 
-    # Simple language detection based on the presence of Vietnamese characters
-    if any("ăâđêôơư" in s for s in question.lower()):
+    # Enhanced language detection logic
+    def is_vietnamese(question):
+        # Vietnamese-specific characters
+        vietnamese_chars = "ủũụọõỏẹẻẽịĩỉìạãảàăâđêôơư"
+        # Common Vietnamese words or phrases without accents
+        vietnamese_keywords = ['la', 'gi', 'ban', 'toi', 'khong', 'nhe', 'co', 'khong']
+        
+        question_lower = question.lower()
+        # Check for Vietnamese-specific characters
+        if any(char in vietnamese_chars for char in question_lower):
+            return True
+        # Check for common Vietnamese words or phrases
+        elif any(keyword in question_lower for keyword in vietnamese_keywords):
+            return True
+        return False
+
+    if is_vietnamese(question):
         answer = chatbot_vn.get_answer(question)
     else:
         answer = chatbot_en.get_answer(question)
@@ -31,4 +57,4 @@ def query():
     return jsonify({'response': answer})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
