@@ -45,8 +45,9 @@ class Chatbox {
     
         let msg1 = { name: "User", message: text1 };
         this.messages.push(msg1);
+
     
-        fetch('http://127.0.0.1:8000/query/', { // Change the URL to match your FastAPI endpoint
+        fetch('http://127.0.0.1:5000/query/', { // Change the URL to match your FastAPI endpoint
             method: 'POST',
             body: JSON.stringify({ query: text1 }), // Adjust the body to match the backend's expected format
             mode: 'cors',
@@ -54,6 +55,7 @@ class Chatbox {
                 'Content-Type': 'application/json'
             },
         })
+        
         .then(r => r.json())
         .then(r => {
             let msg2 = { name: "Sam", message: r.response }; // Use the correct property from the response
