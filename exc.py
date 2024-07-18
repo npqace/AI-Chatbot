@@ -22,17 +22,3 @@ class ChatbotAI:
     def get_answer(self, user_question):
         most_similar_question = self.find_most_similar_question(user_question)
         return most_similar_question['Answer']
-
-# # Example usage for English
-# excel_path = "/Users/phamthanhtruc/Downloads/re/Chatbot1/Chatbot-VSTEP.xlsx"
-# chatbot_en = ChatbotAI(excel_path, language='English')
-# user_question_en = "What does registration for the VSTEP exam include?"
-# answer_en = chatbot_en.get_answer(user_question_en)
-# print(answer_en)
-
-# # Example usage for Vietnamese
-# chatbot_vn = ChatbotAI(excel_path, language='Vietnamese')
-# user_question_vn = "Đăng ký tham gia kỳ thi VSTEP bao gồm những gì?"
-# answer_vn = chatbot_vn.get_answer(user_question_vn)
-# print(answer_vn)
-
